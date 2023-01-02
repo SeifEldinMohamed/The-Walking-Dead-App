@@ -1,4 +1,4 @@
-package com.seif.thewalkingdeadapp.navigation
+package com.seif.thewalkingdeadapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

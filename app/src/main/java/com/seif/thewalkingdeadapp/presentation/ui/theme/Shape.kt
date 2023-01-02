@@ -1,4 +1,4 @@
-package com.seif.thewalkingdeadapp.ui.theme
+package com.seif.thewalkingdeadapp.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

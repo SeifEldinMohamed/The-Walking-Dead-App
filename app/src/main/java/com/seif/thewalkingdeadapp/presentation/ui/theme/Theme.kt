@@ -1,4 +1,4 @@
-package com.seif.thewalkingdeadapp.ui.theme
+package com.seif.thewalkingdeadapp.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
