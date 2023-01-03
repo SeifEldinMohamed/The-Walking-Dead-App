@@ -1,4 +1,4 @@
-package com.seif.thewalkingdeadapp.data.local
+package com.seif.thewalkingdeadapp.data.local.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
