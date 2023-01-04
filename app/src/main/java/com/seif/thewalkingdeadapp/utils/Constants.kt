@@ -8,4 +8,6 @@ object Constants {
     const val CHARACTER_REMOTE_KEY_DATABASE_TABLE = "character_remote_key_table"
     const val THE_WALKING_DEAD_DATABASE = "the_walking_dead_database"
 
+    const val ON_BOARDING_PAGE_COUNT = 3
+
 }
