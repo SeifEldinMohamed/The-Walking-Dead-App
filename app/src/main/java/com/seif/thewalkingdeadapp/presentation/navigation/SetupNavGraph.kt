@@ -6,9 +6,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.seif.thewalkingdeadapp.presentation.screens.splash.SplashScreen
+import com.seif.thewalkingdeadapp.presentation.screens.welcome.WelcomeScreen
 import com.seif.thewalkingdeadapp.utils.Constants.DETAILS_ARGUMENT_KEY
 
+@ExperimentalPagerApi
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
@@ -19,7 +22,7 @@ fun SetupNavGraph(navController: NavHostController) {
             SplashScreen(navController = navController)
         }
         composable(route = Screen.Welcome.route) {
-
+            WelcomeScreen(navController = navController)
         }
         composable(route = Screen.Home.route) {
 
