@@ -2,7 +2,9 @@ package com.seif.thewalkingdeadapp.di
 
 import android.content.Context
 import com.seif.thewalkingdeadapp.data.local.pref.DataStoreOperationsImp
+import com.seif.thewalkingdeadapp.data.repository.MainRepositoryImp
 import com.seif.thewalkingdeadapp.domain.repository.DataStoreOperations
+import com.seif.thewalkingdeadapp.domain.repository.MainRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +22,14 @@ object RepositoryModule {
         @ApplicationContext context: Context
     ): DataStoreOperations {
         return DataStoreOperationsImp(context = context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMainRepository(
+        dataStoreOperations: DataStoreOperations
+    ): MainRepository {
+        return MainRepositoryImp(dataStoreOperations)
     }
 
 }
