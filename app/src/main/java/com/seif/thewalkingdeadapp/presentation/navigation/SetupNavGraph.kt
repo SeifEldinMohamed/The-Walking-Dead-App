@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.seif.thewalkingdeadapp.presentation.screens.home.HomeScreen
 import com.seif.thewalkingdeadapp.presentation.screens.splash.SplashScreen
 import com.seif.thewalkingdeadapp.utils.Constants.DETAILS_ARGUMENT_KEY
 
@@ -27,7 +28,7 @@ fun SetupNavGraph(navController: NavHostController) {
             WelcomeScreen(navController = navController)
         }
         composable(route = Screen.Home.route) {
-
+            HomeScreen()
         }
         composable(
             route = Screen.Details.route,

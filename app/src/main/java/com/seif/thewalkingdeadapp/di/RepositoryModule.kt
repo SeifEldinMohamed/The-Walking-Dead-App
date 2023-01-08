@@ -32,4 +32,14 @@ object RepositoryModule {
         return MainRepositoryImp(dataStoreOperations)
     }
 
+    /**
+    @Provides
+    @Singleton
+    fun provideUseCases(repository: Repository): UseCases {
+    return UseCases(
+    saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
+    readOnBoardingUseCase = ReadOnBoardingUseCase(repository)
+    )
+    }
+     **/
 }
