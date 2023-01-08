@@ -1,5 +1,7 @@
 package com.seif.thewalkingdeadapp.presentation.navigation
 
+import WelcomeScreen
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,9 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.seif.thewalkingdeadapp.presentation.screens.splash.SplashScreen
-import com.seif.thewalkingdeadapp.presentation.screens.welcome.WelcomeScreen
 import com.seif.thewalkingdeadapp.utils.Constants.DETAILS_ARGUMENT_KEY
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun SetupNavGraph(navController: NavHostController) {

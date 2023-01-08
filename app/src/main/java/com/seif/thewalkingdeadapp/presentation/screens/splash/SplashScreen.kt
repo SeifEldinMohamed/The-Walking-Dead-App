@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.seif.thewalkingdeadapp.R
+import com.seif.thewalkingdeadapp.presentation.navigation.Screen
 import com.seif.thewalkingdeadapp.presentation.ui.theme.Purple500
 import com.seif.thewalkingdeadapp.presentation.ui.theme.Purple700
 
@@ -39,6 +40,8 @@ fun SplashScreen(navController: NavHostController) {
                 delayMillis = 200
             )
         )
+        navController.popBackStack()
+        navController.navigate(Screen.Welcome.route)
     }
 
     Splash(degrees = degrees.value)
