@@ -1,49 +1,77 @@
-package com.seif.thewalkingdeadapp.presentation.screens.welcome
-
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import com.seif.thewalkingdeadapp.R
 import com.seif.thewalkingdeadapp.domain.model.OnBoardingPage
+import com.seif.thewalkingdeadapp.presentation.navigation.Screen
+import com.seif.thewalkingdeadapp.presentation.screens.welcome.WelcomeViewModel
 import com.seif.thewalkingdeadapp.presentation.ui.theme.*
+import com.seif.thewalkingdeadapp.utils.Constants.LAST_ON_BOARDING_PAGE
 import com.seif.thewalkingdeadapp.utils.Constants.ON_BOARDING_PAGE_COUNT
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(
+    navController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf(
         OnBoardingPage.First,
         OnBoardingPage.Second,
         OnBoardingPage.Third
     )
 
-    val pagerState = rememberPagerState() // Creates a PagerState that is remembered across compositions.the initial page default value = 0
+    val pagerState = rememberPagerState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colors.welcomeScreenBackgroundColor)
     ) {
-        HorizontalPager( // part of Accompanist library
+        HorizontalPager(
+            modifier = Modifier.weight(10f),
             state = pagerState,
             count = ON_BOARDING_PAGE_COUNT,
             verticalAlignment = Alignment.Top
         ) { position ->
             PagerScreen(onBoardingPage = pages[position])
+        }
+        HorizontalPagerIndicator(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterHorizontally),
+            pagerState = pagerState,
+            activeColor = MaterialTheme.colors.activeIndicatorColor,
+            inactiveColor = MaterialTheme.colors.inactiveIndicatorColor,
+            indicatorWidth = PAGING_INDICATOR_WIDTH,
+            spacing = PAGING_INDICATOR_SPACING
+        )
+        FinishButton(
+            modifier = Modifier.weight(1f),
+            pagerState = pagerState
+        ) {
+            navController.popBackStack()
+            navController.navigate(Screen.Home.route)
+            welcomeViewModel.saveOnBoardingState(completed = true)
         }
     }
 }
@@ -58,8 +86,8 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
     ) {
         Image(
             modifier = Modifier
-                .fillMaxWidth(0.5f) // 50% of full width of this column
-                .fillMaxHeight(0.7f), // 70% of full height of this column
+                .fillMaxWidth(0.5f)
+                .fillMaxHeight(0.7f),
             painter = painterResource(id = onBoardingPage.image),
             contentDescription = stringResource(R.string.on_boarding_image)
         )
@@ -83,6 +111,37 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
+@Composable
+fun FinishButton(
+    modifier: Modifier,
+    pagerState: PagerState,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = EXTRA_LARGE_PADDING),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        AnimatedVisibility( // will animate tha appearance and disappearance of this button
+            modifier = Modifier.fillMaxWidth(),
+            visible = pagerState.currentPage == LAST_ON_BOARDING_PAGE
+        ) {
+            Button(
+                onClick = onClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colors.buttonBackgroundColor,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Finish")
+            }
+        }
     }
 }
 
