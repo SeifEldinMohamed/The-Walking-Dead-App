@@ -9,5 +9,6 @@ object Constants {
     const val THE_WALKING_DEAD_DATABASE = "the_walking_dead_database"
 
     const val ON_BOARDING_PAGE_COUNT = 3
+    const val LAST_ON_BOARDING_PAGE = 2
 
 }
