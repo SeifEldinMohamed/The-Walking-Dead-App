@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.seif.thewalkingdeadapp.R
-import com.seif.thewalkingdeadapp.domain.model.OnBoardingPage
+import com.seif.thewalkingdeadapp.presentation.screens.welcome.OnBoardingPage
 import com.seif.thewalkingdeadapp.presentation.navigation.Screen
 import com.seif.thewalkingdeadapp.presentation.screens.welcome.WelcomeViewModel
 import com.seif.thewalkingdeadapp.presentation.ui.theme.*

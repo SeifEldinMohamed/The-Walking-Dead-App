@@ -1,4 +1,4 @@
-package com.seif.thewalkingdeadapp.domain.model
+package com.seif.thewalkingdeadapp.presentation.screens.welcome
 
 import androidx.annotation.DrawableRes
 import com.seif.thewalkingdeadapp.R
