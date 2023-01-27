@@ -1,7 +1,11 @@
 package com.seif.thewalkingdeadapp.di
 
+import androidx.paging.ExperimentalPagingApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.seif.thewalkingdeadapp.data.local.TheWalkingDeadDatabase
 import com.seif.thewalkingdeadapp.data.remote.TheWalkingDeadApi
+import com.seif.thewalkingdeadapp.data.remote.datasource.RemoteDataSourceImpl
+import com.seif.thewalkingdeadapp.domain.repository.RemoteDataSource
 import com.seif.thewalkingdeadapp.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -15,6 +19,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+@ExperimentalPagingApi
 @ExperimentalSerializationApi
 @Module
 @InstallIn(SingletonComponent::class)
@@ -44,6 +49,20 @@ object NetworkModule {
     @Singleton
     fun provideTheWalkingDeadApi(retrofit: Retrofit): TheWalkingDeadApi {
         return retrofit.create(TheWalkingDeadApi::class.java)
+    }
+
+
+
+    @Provides
+    @Singleton
+    fun provideRemoteDataSource(
+        walkingDeadApi: TheWalkingDeadApi,
+        walkingDeadDatabase: TheWalkingDeadDatabase
+    ): RemoteDataSource {
+        return RemoteDataSourceImpl(
+            walkingDeadApi = walkingDeadApi,
+            walkingDeadDatabase = walkingDeadDatabase
+        )
     }
 
 }
