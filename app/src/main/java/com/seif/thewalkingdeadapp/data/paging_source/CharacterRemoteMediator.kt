@@ -6,8 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.seif.thewalkingdeadapp.data.local.TheWalkingDeadDatabase
+import com.seif.thewalkingdeadapp.data.local.entities.CharacterEntity
 import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeysEntity
-import com.seif.thewalkingdeadapp.data.mapper.toCharacter
+import com.seif.thewalkingdeadapp.data.mapper.toCharacterEntity
 import com.seif.thewalkingdeadapp.data.mapper.toCharacterRemoteKeys
 import com.seif.thewalkingdeadapp.data.remote.TheWalkingDeadApi
 import com.seif.thewalkingdeadapp.data.remote.dto.CharacterDto
@@ -17,13 +18,13 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 class CharacterRemoteMediator @Inject constructor(
     private val walkingDeadApi: TheWalkingDeadApi,
-    private val WalkingDeadDatabase: TheWalkingDeadDatabase
-) : RemoteMediator<Int, CharacterDto>() {
-    private val characterDao = WalkingDeadDatabase.characterDao()
-    private val characterRemoteKeysDao = WalkingDeadDatabase.characterRemoteKeysDao()
+    private val walkingDeadDatabase: TheWalkingDeadDatabase
+) : RemoteMediator<Int, CharacterEntity>() {
+    private val characterDao = walkingDeadDatabase.characterDao()
+    private val characterRemoteKeysDao = walkingDeadDatabase.characterRemoteKeysDao()
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, CharacterDto>
+        state: PagingState<Int, CharacterEntity>
     ): MediatorResult {
         return try {
 
@@ -50,7 +51,7 @@ class CharacterRemoteMediator @Inject constructor(
 
             val response = walkingDeadApi.getAllCharacters(page = page)
             if (response.heroes.isNotEmpty()) {
-                WalkingDeadDatabase.withTransaction { // will allow us to execute multiple database operations, sequentially one by one
+                walkingDeadDatabase.withTransaction { // will allow us to execute multiple database operations, sequentially one by one
                     if (loadType == LoadType.REFRESH) { // happened in first time user enters app or if invalidate requested
                         characterDao.deleteAllCharacters()
                         characterRemoteKeysDao.deleteAllRemoteKeys()
@@ -60,7 +61,7 @@ class CharacterRemoteMediator @Inject constructor(
                     val keys: List<CharacterRemoteKeysEntity> =
                         response.heroes.map { it.toCharacterRemoteKeys(prevPage, nextPage) }
                     characterRemoteKeysDao.addAllRemoteKeys(characterRemoteKeyEntities = keys)
-                    characterDao.addCharacters(characterEntities = response.heroes.map { it.toCharacter() })
+                    characterDao.addCharacters(characterEntities = response.heroes.map { it.toCharacterEntity() })
                 }
             }
             MediatorResult.Success(endOfPaginationReached = response.nextPage == null)
@@ -70,7 +71,7 @@ class CharacterRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, CharacterDto>
+        state: PagingState<Int, CharacterEntity>
     ): CharacterRemoteKeysEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
@@ -80,7 +81,7 @@ class CharacterRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, CharacterDto>
+        state: PagingState<Int, CharacterEntity>
     ): CharacterRemoteKeysEntity? {
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
@@ -91,7 +92,7 @@ class CharacterRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, CharacterDto>
+        state: PagingState<Int, CharacterEntity>
     ): CharacterRemoteKeysEntity? {
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
