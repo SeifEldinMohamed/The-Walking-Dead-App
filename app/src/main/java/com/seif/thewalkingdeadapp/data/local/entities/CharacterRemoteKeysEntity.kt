@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.seif.thewalkingdeadapp.utils.Constants.CHARACTER_REMOTE_KEYS_DATABASE_TABLE
 
 @Entity(tableName = CHARACTER_REMOTE_KEYS_DATABASE_TABLE)
-data class CharacterRemoteKeys(
+data class CharacterRemoteKeysEntity(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val prevPage: Int?,

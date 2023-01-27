@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.seif.thewalkingdeadapp.utils.Constants.CHARACTER_DATABASE_TABLE
 
 @Entity(tableName = CHARACTER_DATABASE_TABLE)
-data class Character(
+data class CharacterEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,

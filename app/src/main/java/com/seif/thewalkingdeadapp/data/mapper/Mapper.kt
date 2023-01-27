@@ -1,10 +1,10 @@
 package com.seif.thewalkingdeadapp.data.mapper
 
-import com.seif.thewalkingdeadapp.data.local.entities.Character
-import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeys
+import com.seif.thewalkingdeadapp.data.local.entities.CharacterEntity
+import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeysEntity
 import com.seif.thewalkingdeadapp.data.remote.dto.CharacterDto
 
-fun Character.toCharacterDto(): CharacterDto {
+fun CharacterEntity.toCharacterDto(): CharacterDto {
     return CharacterDto(
         id = id,
         name = name,
@@ -18,8 +18,8 @@ fun Character.toCharacterDto(): CharacterDto {
     )
 }
 
-fun CharacterDto.toCharacter(): Character {
-    return Character(
+fun CharacterDto.toCharacter(): CharacterEntity {
+    return CharacterEntity(
         id = id,
         name = name,
         realName = realName,
@@ -32,8 +32,8 @@ fun CharacterDto.toCharacter(): Character {
     )
 }
 
-fun CharacterDto.toCharacterRemoteKeys(prevPage: Int?, nextPage: Int?): CharacterRemoteKeys {
-    return CharacterRemoteKeys(
+fun CharacterDto.toCharacterRemoteKeys(prevPage: Int?, nextPage: Int?): CharacterRemoteKeysEntity {
+    return CharacterRemoteKeysEntity(
         id = id,
         prevPage = prevPage,
         nextPage = nextPage

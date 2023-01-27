@@ -5,19 +5,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.seif.thewalkingdeadapp.data.local.entities.Character
+import com.seif.thewalkingdeadapp.data.local.entities.CharacterEntity
 
 @Dao
 interface CharacterDao {
 
     @Query("SELECT * FROM character_table ORDER BY id ASC")
-    fun getAllCharacters(): PagingSource<Int, Character>
+    fun getAllCharacters(): PagingSource<Int, CharacterEntity>
 
     @Query("SELECT * FROM character_table WHERE id=:characterId")
-    fun getSelectedCharacter(characterId: Int): Character
+    fun getSelectedCharacter(characterId: Int): CharacterEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCharacters(characters: List<Character>)
+    suspend fun addCharacters(characterEntities: List<CharacterEntity>)
 
     @Query("DELETE FROM character_table")
     suspend fun deleteAllCharacters()
