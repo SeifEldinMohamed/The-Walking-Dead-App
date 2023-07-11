@@ -20,7 +20,7 @@ class RemoteDataSourceImpl(
 
     private val characterDao = walkingDeadDatabase.characterDao()
 
-    override fun getAllHeroes(): Flow<PagingData<CharacterEntity>> {
+    override fun getAllCharacters(): Flow<PagingData<CharacterEntity>> {
         val pagingSourceFactory = { characterDao.getAllCharacters() }
         return Pager(
             config = PagingConfig(pageSize = 3),
@@ -32,7 +32,7 @@ class RemoteDataSourceImpl(
         ).flow
     }
 
-    override fun searchHeroes(query: String): Flow<PagingData<CharacterDto>> {
+     fun searchCharacters(query: String): Flow<PagingData<CharacterDto>> {
 //        return Pager(
 //            config = PagingConfig(pageSize = ITEMS_PER_PAGE),
 //            pagingSourceFactory = {
