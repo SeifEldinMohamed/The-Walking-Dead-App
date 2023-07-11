@@ -3,10 +3,10 @@ package com.seif.thewalkingdeadapp.data.mapper
 import com.seif.thewalkingdeadapp.data.local.entities.CharacterEntity
 import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeysEntity
 import com.seif.thewalkingdeadapp.data.remote.dto.CharacterDto
-import com.seif.thewalkingdeadapp.domain.model.MyCharacter
+import com.seif.thewalkingdeadapp.domain.model.CharacterDomainModel
 
-fun CharacterDto.toMyCharacter(): MyCharacter {
-    return MyCharacter(
+fun CharacterDto.toCharacterDomainModel(): CharacterDomainModel {
+    return CharacterDomainModel(
         id = id,
         name = name,
         realName = realName,
@@ -40,8 +40,8 @@ fun CharacterDto.toCharacterRemoteKeysEntity(prevPage: Int?, nextPage: Int?): Ch
     )
 }
 
-fun CharacterEntity.toMyCharacter(): MyCharacter {
-    return MyCharacter(
+fun CharacterEntity.toCharacterDomainModel(): CharacterDomainModel {
+    return CharacterDomainModel(
         id = id,
         name = name,
         realName = realName,
@@ -67,7 +67,7 @@ fun CharacterEntity.toCharacterDto(): CharacterDto {
     )
 }
 
-fun MyCharacter.toCharacterDto(): CharacterDto {
+fun CharacterDomainModel.toCharacterDto(): CharacterDto {
     return CharacterDto(
         id = id,
         name = name,
@@ -81,7 +81,7 @@ fun MyCharacter.toCharacterDto(): CharacterDto {
     )
 }
 
-fun MyCharacter.toCharacterEntity(): CharacterEntity {
+fun CharacterDomainModel.toCharacterEntity(): CharacterEntity {
     return CharacterEntity(
         id = id,
         name = name,
