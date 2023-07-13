@@ -6,6 +6,10 @@ import com.seif.thewalkingdeadapp.data.repository.MainRepositoryImp
 import com.seif.thewalkingdeadapp.domain.repository.DataStoreOperations
 import com.seif.thewalkingdeadapp.domain.repository.MainRepository
 import com.seif.thewalkingdeadapp.domain.repository.RemoteDataSource
+import com.seif.thewalkingdeadapp.domain.usecase.GetAllCharactersUseCase
+import com.seif.thewalkingdeadapp.domain.usecase.ReadOnBoardingUseCase
+import com.seif.thewalkingdeadapp.domain.usecase.SaveOnBoardingUseCase
+import com.seif.thewalkingdeadapp.domain.usecase.UseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,14 +38,14 @@ object RepositoryModule {
         return MainRepositoryImp(dataStoreOperations, remote)
     }
 
-    /**
+
     @Provides
     @Singleton
-    fun provideUseCases(repository: Repository): UseCases {
-    return UseCases(
-    saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
-    readOnBoardingUseCase = ReadOnBoardingUseCase(repository)
-    )
+    fun provideUseCases(mainRepository: MainRepository): UseCases {
+        return UseCases(
+            saveOnBoardingUseCase = SaveOnBoardingUseCase(mainRepository),
+            readOnBoardingUseCase = ReadOnBoardingUseCase(mainRepository),
+            getAllCharactersUseCase = GetAllCharactersUseCase(mainRepository)
+        )
     }
-     **/
 }
