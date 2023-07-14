@@ -6,6 +6,6 @@ import com.seif.thewalkingdeadapp.data.remote.dto.CharacterDto
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
-    fun getAllHeroes(): Flow<PagingData<CharacterEntity>>
-    fun searchHeroes(query: String): Flow<PagingData<CharacterDto>>
+    fun getAllCharacters(): Flow<PagingData<CharacterEntity>>
+   // fun searchCharacters(query: String): Flow<PagingData<CharacterDto>>
 }
