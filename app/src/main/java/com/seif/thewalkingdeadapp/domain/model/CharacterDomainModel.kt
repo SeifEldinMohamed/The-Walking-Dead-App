@@ -1,6 +1,6 @@
 package com.seif.thewalkingdeadapp.domain.model
 
-data class MyCharacter(
+data class CharacterDomainModel(
     val id: Int,
     val name: String,
     val realName: String,
