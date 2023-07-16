@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
+val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME) // this extension variable used to access our datastore
 
 class DataStoreOperationsImp(context: Context) : DataStoreOperations {
     private object PreferenceKey {
         val onBoardingKey = booleanPreferencesKey(name = PREFERENCES_KEY)
     }
 
-    val datastore = context.datastore
+    private val datastore = context.datastore
 
     override suspend fun saveOnBoardingState(completed: Boolean) {
         datastore.edit { preferences ->
@@ -39,7 +39,7 @@ class DataStoreOperationsImp(context: Context) : DataStoreOperations {
                     throw exception
             }
             .map { preferences ->
-                val onBoardingState = preferences[PreferenceKey.onBoardingKey] ?: false
+                val onBoardingState = preferences[PreferenceKey.onBoardingKey] ?: false // if null return default value
                 onBoardingState
             }
     }
