@@ -11,7 +11,6 @@ import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeysEntity
 import com.seif.thewalkingdeadapp.data.mapper.toCharacterEntity
 import com.seif.thewalkingdeadapp.data.mapper.toCharacterRemoteKeys
 import com.seif.thewalkingdeadapp.data.remote.TheWalkingDeadApi
-import com.seif.thewalkingdeadapp.data.remote.dto.CharacterDto
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class CharacterRemoteMediator @Inject constructor(
     private val walkingDeadApi: TheWalkingDeadApi,
     private val walkingDeadDatabase: TheWalkingDeadDatabase
-) : RemoteMediator<Int, CharacterEntity>() {
+) : RemoteMediator<Int, CharacterEntity>() { // key and value ( key: page of type integer(
     private val characterDao = walkingDeadDatabase.characterDao()
     private val characterRemoteKeysDao = walkingDeadDatabase.characterRemoteKeysDao()
     override suspend fun load(

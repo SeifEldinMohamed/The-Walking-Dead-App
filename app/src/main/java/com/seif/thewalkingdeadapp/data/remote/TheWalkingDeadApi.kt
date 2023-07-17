@@ -5,7 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TheWalkingDeadApi {
-
     @GET("/heroes")
     suspend fun getAllCharacters(
         @Query("page") page: Int = 1
@@ -15,5 +14,4 @@ interface TheWalkingDeadApi {
     suspend fun searchHeroes(
         @Query("name") name: String
     ): ApiResponse
-
 }
