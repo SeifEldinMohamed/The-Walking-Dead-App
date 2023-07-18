@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.seif.thewalkingdeadapp.R
 import com.seif.thewalkingdeadapp.presentation.navigation.Screen
 import com.seif.thewalkingdeadapp.presentation.ui.theme.Purple500
@@ -28,7 +29,7 @@ import com.seif.thewalkingdeadapp.presentation.ui.theme.Purple700
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController,
+    onSplashFinished: (Boolean) -> Unit,
     splashViewModel: SplashViewModel = hiltViewModel()
 ) {
     val onBoardingCompleted by splashViewModel.onBoardingCompleted.collectAsState()
@@ -39,14 +40,10 @@ fun SplashScreen(
             targetValue = 360f,
             animationSpec = tween(
                 durationMillis = 1000,
-                delayMillis = 200
+                delayMillis = 200 // delay before animation starts
             )
         )
-        navController.popBackStack()
-        if (onBoardingCompleted)
-            navController.navigate(Screen.Home.route)
-        else
-            navController.navigate(Screen.Welcome.route)
+        onSplashFinished(onBoardingCompleted)
     }
 
     Splash(degrees = degrees.value)
@@ -88,6 +85,7 @@ fun Splash(degrees: Float) {
 @Composable
 @Preview
 fun SplashScreenPreview() {
+    // Splash(degrees = 0f)
     Splash(degrees = 0f)
 }
 
