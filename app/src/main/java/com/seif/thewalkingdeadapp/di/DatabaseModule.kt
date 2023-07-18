@@ -2,6 +2,7 @@ package com.seif.thewalkingdeadapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.seif.thewalkingdeadapp.data.local.TheWalkingDeadDatabase
 import com.seif.thewalkingdeadapp.utils.Constants.THE_WALKING_DEAD_DATABASE
 import dagger.Module
@@ -14,15 +15,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
-    fun provideDatabase(
+    fun provideRoomDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
-        context,
-        TheWalkingDeadDatabase::class.java,
-        THE_WALKING_DEAD_DATABASE
-    ).build()
-
+    ): RoomDatabase {
+        return Room.databaseBuilder(
+            context,
+            TheWalkingDeadDatabase::class.java,
+            THE_WALKING_DEAD_DATABASE
+        ).build()
+    }
 }

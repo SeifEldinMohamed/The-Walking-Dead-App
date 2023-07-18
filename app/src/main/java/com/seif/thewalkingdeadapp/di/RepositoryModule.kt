@@ -5,6 +5,7 @@ import com.seif.thewalkingdeadapp.data.local.pref.DataStoreOperationsImp
 import com.seif.thewalkingdeadapp.data.repository.MainRepositoryImp
 import com.seif.thewalkingdeadapp.domain.repository.DataStoreOperations
 import com.seif.thewalkingdeadapp.domain.repository.MainRepository
+import com.seif.thewalkingdeadapp.domain.repository.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,9 +28,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideMainRepository(
-        dataStoreOperations: DataStoreOperations
+        dataStoreOperations: DataStoreOperations,
+        remote: RemoteDataSource
     ): MainRepository {
-        return MainRepositoryImp(dataStoreOperations)
+        return MainRepositoryImp(dataStoreOperations, remote)
     }
 
     /**
