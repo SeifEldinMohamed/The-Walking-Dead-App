@@ -9,7 +9,7 @@ import com.seif.thewalkingdeadapp.data.local.TheWalkingDeadDatabase
 import com.seif.thewalkingdeadapp.data.local.entities.CharacterEntity
 import com.seif.thewalkingdeadapp.data.local.entities.CharacterRemoteKeysEntity
 import com.seif.thewalkingdeadapp.data.mapper.toCharacterEntity
-import com.seif.thewalkingdeadapp.data.mapper.toCharacterRemoteKeys
+import com.seif.thewalkingdeadapp.data.mapper.toCharacterRemoteKeysEntity
 import com.seif.thewalkingdeadapp.data.remote.TheWalkingDeadApi
 import java.lang.Exception
 import javax.inject.Inject
@@ -32,6 +32,7 @@ class CharacterRemoteMediator @Inject constructor(
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextPage?.minus(1) ?: 1
                 }
+
                 LoadType.PREPEND -> { // get remote keys from databases table for the first item, return prev page
                     val remoteKeys = getRemoteKeyForFirstItem(state)
                     remoteKeys?.prevPage
@@ -39,6 +40,7 @@ class CharacterRemoteMediator @Inject constructor(
                             endOfPaginationReached = remoteKeys != null
                         )
                 }
+
                 LoadType.APPEND -> { // return next page
                     val remoteKeys = getRemoteKeyForLastItem(state)
                     remoteKeys?.nextPage
@@ -55,10 +57,14 @@ class CharacterRemoteMediator @Inject constructor(
                         characterDao.deleteAllCharacters()
                         characterRemoteKeysDao.deleteAllRemoteKeys()
                     }
+                    // get prev and next page from api response
                     val prevPage = response.prevPage
                     val nextPage = response.nextPage
                     val keys: List<CharacterRemoteKeysEntity> =
-                        response.heroes.map { it.toCharacterRemoteKeys(prevPage, nextPage) }
+                        response.heroes.map { characterDto ->
+                            characterDto.toCharacterRemoteKeysEntity(prevPage, nextPage)
+                        }
+                    // save in room database
                     characterRemoteKeysDao.addAllRemoteKeys(characterRemoteKeyEntities = keys)
                     characterDao.addCharacters(characterEntities = response.heroes.map { it.toCharacterEntity() })
                 }

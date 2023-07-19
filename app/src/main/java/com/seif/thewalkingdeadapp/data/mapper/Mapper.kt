@@ -32,7 +32,7 @@ fun CharacterDto.toCharacterEntity(): CharacterEntity {
     )
 }
 
-fun CharacterDto.toCharacterRemoteKeys(prevPage: Int?, nextPage: Int?): CharacterRemoteKeysEntity {
+fun CharacterDto.toCharacterRemoteKeysEntity(prevPage: Int?, nextPage: Int?): CharacterRemoteKeysEntity {
     return CharacterRemoteKeysEntity(
         id = id,
         prevPage = prevPage,
