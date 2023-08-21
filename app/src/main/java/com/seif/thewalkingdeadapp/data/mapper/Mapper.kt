@@ -32,11 +32,12 @@ fun CharacterDto.toCharacterEntity(): CharacterEntity {
     )
 }
 
-fun CharacterDto.toCharacterRemoteKeysEntity(prevPage: Int?, nextPage: Int?): CharacterRemoteKeysEntity {
+fun CharacterDto.toCharacterRemoteKeysEntity(prevPage: Int?, nextPage: Int?, lastUpdated: Long?): CharacterRemoteKeysEntity {
     return CharacterRemoteKeysEntity(
         id = id,
         prevPage = prevPage,
-        nextPage = nextPage
+        nextPage = nextPage,
+        lastUpdated = lastUpdated
     )
 }
 
@@ -63,34 +64,34 @@ fun CharacterEntity.toCharacterDto(): CharacterDto {
         image = image,
         quote = quote,
         quoteTime = quoteTime,
-        rating = rating
+        rating = rating,
     )
 }
 
-fun CharacterDomainModel.toCharacterDto(): CharacterDto {
-    return CharacterDto(
-        id = id,
-        name = name,
-        realName = realName,
-        about = about,
-        totalAppearances = totalAppearances,
-        image = image,
-        quote = quote,
-        quoteTime = quoteTime,
-        rating = rating
-    )
-}
-
-fun CharacterDomainModel.toCharacterEntity(): CharacterEntity {
-    return CharacterEntity(
-        id = id,
-        name = name,
-        realName = realName,
-        about = about,
-        totalAppearances = totalAppearances,
-        image = image,
-        quote = quote,
-        quoteTime = quoteTime,
-        rating = rating
-    )
-}
+//fun CharacterDomainModel.toCharacterDto(): CharacterDto {
+//    return CharacterDto(
+//        id = id,
+//        name = name,
+//        realName = realName,
+//        about = about,
+//        totalAppearances = totalAppearances,
+//        image = image,
+//        quote = quote,
+//        quoteTime = quoteTime,
+//        rating = rating,
+//    )
+//}
+//
+//fun CharacterDomainModel.toCharacterEntity(): CharacterEntity {
+//    return CharacterEntity(
+//        id = id,
+//        name = name,
+//        realName = realName,
+//        about = about,
+//        totalAppearances = totalAppearances,
+//        image = image,
+//        quote = quote,
+//        quoteTime = quoteTime,
+//        rating = rating,
+//    )
+//}
