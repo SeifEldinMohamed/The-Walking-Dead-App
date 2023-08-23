@@ -1,14 +1,18 @@
 package com.seif.thewalkingdeadapp.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
@@ -25,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
@@ -32,6 +37,7 @@ import com.seif.thewalkingdeadapp.R
 import com.seif.thewalkingdeadapp.domain.model.CharacterDomainModel
 import com.seif.thewalkingdeadapp.presentation.LightDarkModePreviews
 import com.seif.thewalkingdeadapp.presentation.component.RatingWidget
+import com.seif.thewalkingdeadapp.presentation.component.ShimmerEffect
 import com.seif.thewalkingdeadapp.presentation.ui.theme.CHARACTER_ITEM_HEIGHT
 import com.seif.thewalkingdeadapp.presentation.ui.theme.LightGray
 import com.seif.thewalkingdeadapp.presentation.ui.theme.characterPlaceHolderImage
@@ -42,12 +48,51 @@ fun CharactersListContent(
     characters: LazyPagingItems<CharacterDomainModel>,
     onCharacterClicked: (characterId: Int) -> Unit
 ) {
-    LazyColumn() {
-        items(characters) { character ->
-            CharacterItem(
-                characterDomainModel = character,
-                onCharacterClicked = { onCharacterClicked(it) }
-            )
+    Log.d("characters", characters.loadState.toString())
+    val result = handlePagingResult(charactersLazyPagingItems = characters)
+    Log.d("RemoteMediator","result = $result")
+    if (result) {
+        LazyColumn(
+            contentPadding = PaddingValues(all = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(characters) { character ->
+                Log.d("characters", character.toString())
+                CharacterItem(
+                    characterDomainModel = character,
+                    onCharacterClicked = { onCharacterClicked(it) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun handlePagingResult(
+    charactersLazyPagingItems: LazyPagingItems<CharacterDomainModel>
+): Boolean {
+    charactersLazyPagingItems.apply {
+        val error = when {
+            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+            else -> null
+        }
+
+        return when { // bec we want to show shimmer effect only when initial load is triggered
+            loadState.refresh is LoadState.Loading -> {
+                ShimmerEffect()
+                false
+            }
+            error != null -> {
+                //EmptyScreen(error = error, heroes = heroes)
+                false
+            }
+            charactersLazyPagingItems.itemCount < 1 -> {
+                //EmptyScreen()
+                false
+            }
+            else -> true // display all characters
         }
     }
 }
@@ -59,7 +104,7 @@ fun CharacterItem(
 ) {
     characterDomainModel?.let { character ->
         val painter = rememberAsyncImagePainter(
-            model = "$BASE_URL${characterDomainModel.image}",
+            model = "$BASE_URL/${characterDomainModel.image}",
             placeholder = painterResource(id = characterPlaceHolderImage),
             error = painterResource(id = characterPlaceHolderImage)
         )
@@ -68,7 +113,6 @@ fun CharacterItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(CHARACTER_ITEM_HEIGHT)
-                .padding(10.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .clickable {
                     onCharacterClicked(character.id)
@@ -83,10 +127,8 @@ fun CharacterItem(
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .background(Color.Black.copy(ContentAlpha.medium))
-
-                ,
+                    .wrapContentWidth()
+                    .background(Color.Black.copy(ContentAlpha.medium)),
             ) {
                 Text(
                     text = character.name,
@@ -112,7 +154,6 @@ fun CharacterItem(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(start = 12.dp)
                         .padding(vertical = 18.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -120,7 +161,7 @@ fun CharacterItem(
 
                     Text(
                         text = "(${character.rating})",
-                        fontSize = 12.sp,
+                        fontSize = 16.sp,
                         color = LightGray,
                         maxLines = 1,
                         modifier = Modifier.padding(start = 8.dp)
@@ -128,10 +169,8 @@ fun CharacterItem(
                 }
 
             }
-
         }
     }
-
 }
 
 @LightDarkModePreviews
