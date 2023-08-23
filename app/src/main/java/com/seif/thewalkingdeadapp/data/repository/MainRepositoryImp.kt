@@ -18,8 +18,8 @@ class MainRepositoryImp @Inject constructor(
 
     override fun getAllCharacters(): Flow<PagingData<CharacterDomainModel>> {
         return remote.getAllCharacters().map {
-            it.map { characterEntity ->
-                characterEntity.toCharacterDomainModel()
+            it.map {  CharacterDto ->
+                CharacterDto.toCharacterDomainModel()
             }
         }
     }
